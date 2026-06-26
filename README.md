@@ -9,7 +9,6 @@ Dieses Repository ist der zentrale Einstiegspunkt für menschliche Entwickler un
 
 - **GitHub:** https://github.com/SOWITransferX/plugin-devkit
 - **Organisation:** SOWITransferX
-- **Lokaler Pfad:** `Data\Repositories\TransferX\Plugins\plugin-devkit`
 
 ## Inhalt
 
@@ -42,7 +41,7 @@ Dieses Repository ist der zentrale Einstiegspunkt für menschliche Entwickler un
 
 | Repository | Verantwortlich für |
 | --- | --- |
-| **TransferX** (`Data\Repositories\TransferX\Source`) | Runtime, Core, Deployment, Abstractions-Quellcode |
+| **TransferX** (`Repositories\TransferX\Source`) | Runtime, Core, Deployment, Abstractions-Quellcode |
 | **plugin-devkit** (dieses Repo) | Plugin-Entwicklung, Skills, Templates, Developer-Dokumentation |
 
 Dokumentation wird aus TransferX **kopiert** (nie verlinkt als Submodule). Details: [docs/MIGRATION.md](docs/MIGRATION.md).
@@ -57,4 +56,4 @@ Dokumentation wird aus TransferX **kopiert** (nie verlinkt als Submodule). Detai
 
 ## Lizenz
 
-MIT — siehe [LICENSE.md](LICENSE.md).
+Siehe [LICENSE.md](LICENSE.md).

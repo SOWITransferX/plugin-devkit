@@ -17,8 +17,8 @@ description: >-
 
 - Datei-Header in jeder C#-Datei:
   ```
-  SOWI Informatik, www.sowi.ch
-  Franz Schönbächler
+  TransferX, transferx.ch
+  
   ```
 - Kommentare und /// XML-Docs: **Deutsch**
 - NuGet-Pakete: **Plural** — `TransferX.Provider.Abstractions`, `TransferX.Transfer.Abstractions`

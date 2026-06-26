@@ -7,8 +7,8 @@ Beiträge unterliegen der [MIT-Lizenz](LICENSE.md) des Repositories.
 - Alle C#- und CSHTML-Dateien müssen den Datei-Header enthalten:
 
   ```
-  SOWI Informatik, www.sowi.ch
-  Franz Schönbächler
+  TransferX, transferx.ch
+  
   ```
 
 - Erklärungen in Chat und Code-Kommentaren (// und /// XML Comments) sind auf **Deutsch**.
@@ -18,7 +18,7 @@ Beiträge unterliegen der [MIT-Lizenz](LICENSE.md) des Repositories.
 
 ## Dokumentations-Sync
 
-- **Owner der Wahrheit:** `Data\Repositories\TransferX\Source`
+- **Owner der Wahrheit:** `Repositories\TransferX\Source`
 - **Sync-Methode:** Kopie (nie Submodule, Symlinks oder direkte Referenzen)
 - **Auslöser:** bei Bedarf, Abstractions-Release oder manuell per KI-Agent
 - Details: [docs/MIGRATION.md](docs/MIGRATION.md)
