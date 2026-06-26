@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>TransferX.Transfer.MyCommand</AssemblyName>
+    <RootNamespace>TransferX.Transfer.MyCommand</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Version aus plugin-devkit/sdk/package-versions.json -->
+    <!-- Keine TransferX.Core-Referenz -->
+    <PackageReference Include="TransferX.Transfer.Abstractions" Version="26.5.5" />
+  </ItemGroup>
+
+</Project>

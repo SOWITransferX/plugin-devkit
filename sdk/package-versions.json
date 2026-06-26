@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Kanonische NuGet-Versionen für TransferX Plugin-Entwicklung. Alle Templates und .csproj-Dateien müssen diese Versionen verwenden.",
+  "lastUpdated": "2026-06-26",
+  "packages": {
+    "TransferX.Provider.Abstractions": "26.5.5",
+    "TransferX.Transfer.Abstractions": "26.5.5",
+    "TransferX.Domain": "26.5.5"
+  },
+  "notes": [
+    "Paketnamen immer Plural: Abstractions (nicht Abstraction).",
+    "Versionen entsprechen dem höchsten bekannten Stand (Provider-Dummy 26.5.5).",
+    "Bei Abstractions-Release manuell oder per KI-Agent aktualisieren."
+  ]
+}

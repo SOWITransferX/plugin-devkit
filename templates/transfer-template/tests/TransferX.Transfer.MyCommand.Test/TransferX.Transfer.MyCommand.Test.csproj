@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsTestProject>true</IsTestProject>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>TransferX.Transfer.MyCommand.Test</AssemblyName>
+    <RootNamespace>TransferX.Transfer.MyCommand.Test</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
+    <PackageReference Include="Moq" Version="4.20.70" />
+    <PackageReference Include="TransferX.Transfer.Abstractions" Version="26.5.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\TransferX.Transfer.MyCommand\TransferX.Transfer.MyCommand.csproj" />
+  </ItemGroup>
+
+</Project>

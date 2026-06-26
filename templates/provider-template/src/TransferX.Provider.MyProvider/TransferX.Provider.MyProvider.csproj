@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>TransferX.Provider.MyProvider</AssemblyName>
+    <RootNamespace>TransferX.Provider.MyProvider</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="TransferX.Provider.MyProvider.Test" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Version aus plugin-devkit/sdk/package-versions.json -->
+    <PackageReference Include="TransferX.Provider.Abstractions" Version="26.5.5" />
+  </ItemGroup>
+
+</Project>

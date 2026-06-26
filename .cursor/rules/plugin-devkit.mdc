@@ -1,0 +1,21 @@
+---
+description: TransferX Plugin-DevKit — Einstieg für Cursor
+alwaysApply: true
+---
+
+# plugin-devkit
+
+Lies zuerst [AGENTS.md](../../AGENTS.md) und befolge alle dort genannten Skills und Dokumentation.
+
+## Pflichtlektüre
+
+1. [AGENTS.md](../../AGENTS.md)
+2. [skills/common/SKILL.md](../../skills/common/SKILL.md)
+3. [sdk/package-versions.json](../../sdk/package-versions.json)
+
+## Aufgabenabhängig
+
+- Provider: [skills/providers/SKILL.md](../../skills/providers/SKILL.md)
+- Transfer: [skills/transfers/SKILL.md](../../skills/transfers/SKILL.md)
+- Templates: [templates/](../../templates/)
+- Docs: [docs/](../../docs/)
