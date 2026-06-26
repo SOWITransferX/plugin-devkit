@@ -54,3 +54,7 @@ Dokumentation wird aus TransferX **kopiert** (nie verlinkt als Submodule). Detai
 | Cursor | [AGENTS.md](AGENTS.md) + [.cursor/rules/plugin-devkit.mdc](.cursor/rules/plugin-devkit.mdc) |
 | GitHub Copilot | [.github/copilot-instructions.md](.github/copilot-instructions.md) |
 | Claude | [CLAUDE.md](CLAUDE.md) |
+
+## Lizenz
+
+MIT — siehe [LICENSE](LICENSE).

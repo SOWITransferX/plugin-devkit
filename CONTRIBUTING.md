@@ -1,5 +1,7 @@
 # Contributing — plugin-devkit
 
+Beiträge unterliegen der [MIT-Lizenz](LICENSE) des Repositories.
+
 ## Guidelines
 
 - Alle C#- und CSHTML-Dateien müssen den Datei-Header enthalten:
