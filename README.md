@@ -57,4 +57,4 @@ Dokumentation wird aus TransferX **kopiert** (nie verlinkt als Submodule). Detai
 
 ## Lizenz
 
-MIT — siehe [LICENSE](LICENSE).
+MIT — siehe [LICENSE.md](LICENSE.md).

@@ -1,6 +1,6 @@
 # Contributing — plugin-devkit
 
-Beiträge unterliegen der [MIT-Lizenz](LICENSE) des Repositories.
+Beiträge unterliegen der [MIT-Lizenz](LICENSE.md) des Repositories.
 
 ## Guidelines
 
