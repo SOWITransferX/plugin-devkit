@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 SOWI Informatik, www.sowi.ch
+Copyright (c) 2026 SOWI Informatik, www.transferx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
