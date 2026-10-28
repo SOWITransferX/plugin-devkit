@@ -45,9 +45,11 @@ https://github.com/SOWITransferX/Provider-Dummy — vollstaendige Test-Suite unt
 
 ## Transfer-Tests
 
-- Provider per **Mock** (`Moq` optional) bereitstellen
+- Provider per **Mock** (`Moq`) und `TransferContext` bereitstellen
+- Fortschritt als `Mock<ITransferProgress>` auf `TransferContext.Progress` setzen
 - Metadaten testen: `CommandName`, `Description`, `Version`
 - Stub-`ExecuteAsync`: leeres Erfolgsergebnis, Cancellation, Exception-Handling
+- Referenztest: die Assembly referenziert `TransferX.Core` nicht
 
 ### Beispiel-Referenz
 

@@ -1,20 +1,22 @@
 # SDK — NuGet-Pakete für Plugin-Entwicklung
 
-<!-- Migriert und angepasst aus TransferX\Source\TransferX\docs\TransferXNuGetPackages.md, Stand: 2026-06-26 -->
+<!-- Angepasst an NuGet TransferX.* 3.0.0-preview.1, Stand: 2026-10-28. Sync: docs/MIGRATION.md (Konsumenten-Sicht von TransferXNuGetPackages.md). -->
 
 Plugin-Projekte konsumieren die TransferX-Schnittstellen als **NuGet-Pakete** — kein Quellcode-Spiegel im DevKit.
 
 ## Kanonische Versionen
 
-Alle Versionen stehen zentral in [package-versions.json](package-versions.json).
+Alle Versionen stehen zentral in [package-versions.json](package-versions.json). Stand: **3.0.0-preview.1** (Preview, nicht `3.0.0`).
 
 | NuGet-Paket-ID | Zweck | Typische Referenz in |
 | --- | --- | --- |
-| `TransferX.Provider.Abstractions` | Provider-Schnittstellen (`IProvider`, Commands, Queries) | Provider-Plugins |
-| `TransferX.Transfer.Abstractions` | Transfer-Schnittstellen (`ITransferCommand`) | Transfer-Plugins |
+| `TransferX.Provider.Abstractions` | Provider-Schnittstellen (`IProvider`, Commands, Queries). Enthält die Build-Sperre gegen `TransferX.Core`. | Provider-Plugins |
+| `TransferX.Transfer.Abstractions` | Transfer-Schnittstellen (`ITransferCommand`, `TransferContext`, `ITransferProgress`). Enthält dieselbe Build-Sperre. | Transfer-Plugins |
 | `TransferX.Domain` | Domain-Modelle, Value Objects (transitiv über Abstractions) | Selten direkt |
 
 > **Wichtig:** Paketnamen sind **Plural** — `TransferX.Provider.Abstractions`, nicht `Abstraction`.
+>
+> **Core ist kein Plugin-Paket.** Eine `PackageReference` auf `TransferX.Core` bricht den Build ab. Host und Plugins nutzen dieselbe Major-Version — siehe [docs/conventions/versioning.md](../docs/conventions/versioning.md).
 
 ## PackageReference in `.csproj`
 
@@ -22,7 +24,7 @@ Alle Versionen stehen zentral in [package-versions.json](package-versions.json).
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="TransferX.Provider.Abstractions" Version="26.5.5" />
+  <PackageReference Include="TransferX.Provider.Abstractions" Version="3.0.0-preview.1" />
 </ItemGroup>
 ```
 
@@ -32,11 +34,17 @@ Version aus [package-versions.json](package-versions.json) übernehmen.
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="TransferX.Transfer.Abstractions" Version="26.5.5" />
+  <PackageReference Include="TransferX.Transfer.Abstractions" Version="3.0.0-preview.1" />
 </ItemGroup>
 ```
 
-**Keine** `TransferX.Core`-Referenz in Transfer-Plugins.
+**Keine** `TransferX.Core`-Referenz. Die Build-Sperre meldet:
+
+```text
+TransferX-Plugins dürfen TransferX.Core nicht referenzieren – nur TransferX.Provider.Abstractions / TransferX.Transfer.Abstractions.
+```
+
+`ExecuteAsync` erhält einen `TransferContext`. Fortschritt läuft über `context.Progress` (`ITransferProgress`, nie null).
 
 ## Voraussetzungen
 
@@ -76,5 +84,6 @@ Owner: `Data\Repositories\TransferX\Source`.
 ## Weiterführend
 
 - [docs/architecture/abstractions.md](../docs/architecture/abstractions.md)
+- [docs/conventions/versioning.md](../docs/conventions/versioning.md)
 - [docs/providers/implement-provider-plugin.md](../docs/providers/implement-provider-plugin.md)
 - [docs/transfers/implement-transfer-plugin.md](../docs/transfers/implement-transfer-plugin.md)

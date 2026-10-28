@@ -1,6 +1,6 @@
 # Plugin-Lifecycle
 
-<!-- Abgeleitet aus TransferX Implement-Guides und Core-Dokumentation, Stand: 2026-06-26 -->
+<!-- Angepasst an SDK 3.0.0-preview.1, Stand: 2026-10-28. -->
 
 Lebenszyklus eines TransferX-Plugins von der Discovery bis zum Deployment.
 
@@ -26,7 +26,9 @@ Plugin als .NET 8 Class Library mit NuGet-Referenz auf Abstractions:
 - Provider: `TransferX.Provider.Abstractions`
 - Transfer: `TransferX.Transfer.Abstractions`
 
-Versionen aus [sdk/package-versions.json](../../sdk/package-versions.json).
+Versionen aus [sdk/package-versions.json](../../sdk/package-versions.json) (aktuell `3.0.0-preview.1`).
+
+Eine Referenz auf `TransferX.Core` bricht den Build ab (Build-Sperre). Core ist kein Plugin-Paket.
 
 ## 2. Discovery
 
@@ -84,7 +86,7 @@ Typische Validierungen:
 
 ### Transfer
 
-`ExecuteAsync(TransferConfigItem, sourceProvider, targetProvider, progress, ct)` orchestriert Provider-Aufrufe.
+`ExecuteAsync(TransferContext, cancellationToken)` orchestriert Provider-Aufrufe. Fortschritt läuft über `context.Progress` (`ITransferProgress`).
 
 ## 6. Deployment
 
@@ -112,9 +114,11 @@ Shared Assemblies (`TransferX.Provider.Abstractions.dll`, `TransferX.Domain.dll`
 
 ## 7. Versionierung
 
+- SDK-Pakete folgen SemVer. Host und Plugins verwenden dieselbe Major-Version.
+- Kanonische Version: [sdk/package-versions.json](../../sdk/package-versions.json). Details: [versioning.md](../conventions/versioning.md).
 - Assembly-Version aus Build (siehe `Directory.Build.props` in Plugin-Repos)
 - `IProvider.Version` / `ITransferCommand.Version` zur Laufzeit ablesbar
-- NuGet-Abstractions-Version unabhaengig von Plugin-Version
+- NuGet-Abstractions-Version unabhaengig von der Plugin-Version
 
 ## Weiterführend
 

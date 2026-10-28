@@ -1,4 +1,4 @@
-﻿<!-- Migriert aus TransferX\Source\TransferX\docs, Stand: 2026-06-26 -->
+﻿<!-- Angepasst an NuGet TransferX.* 3.0.0-preview.1, Stand: 2026-10-28. Sync: docs/MIGRATION.md. -->
 
 # Projekt: TransferX Abstractions
 
@@ -79,16 +79,20 @@ TransferX.Provider.Abstractions
 ```tex
 TransferX.Transfer.Abstractions
 |   ITransferCommand.cs
+|   TransferContext.cs
 |   TransferX.Transfer.Abstractions.csproj
 |
 +---Metadata
 |       TransferMetadataAttribute.cs
 |
-\---Models
-        ChangeItem.cs
-        FileTransferResult.cs
-        TransferConfigItem.cs
-        TransferResult.cs
++---Models
+|       ChangeItem.cs
+|       FileTransferResult.cs
+|       TransferResult.cs
+|
+\---Progress
+        ITransferProgress.cs
+        ProgressAggregator.cs
 ```
 
 
@@ -108,6 +112,7 @@ Haupt-Interface für alle Provider-Plugins. Wird vom `ProviderLoader` dynamisch 
 | `string Name`                                                                       | Anzeigename des Providers                                                 |
 | `string Version`                                                                    | Versionsnummer des Providers                                              |
 | `string ProviderType`                                                               | Technischer Typ (z.B. `"WebDav"`, `"Ftp"`)                                |
+| `ProviderCapability SupportedOperations`                                            | Unterstützte Standard-Operationen. Default: alle sechs. Plugins mit eingeschränktem Switch überschreiben die Property. |
 | `Task InitializeAsync(ProviderConfigItem, CancellationToken)`                       | Initialisiert den Provider vor der ersten Operation                        |
 | `Task<ProviderResponse> ExecuteAsync(ProviderRequest, IProgress<FileProgress>?, CancellationToken)` | Führt eine Provider-Operation (Command oder Query) aus |
 
@@ -216,7 +221,7 @@ Abstrakte Basisklasse für Einträge im Provider-Dateisystem. Gemeinsame Basis f
 | -------------- | ---------- | ----------------------------------------- |
 | `Name`         | `string`   | Name des Eintrags (ohne Pfad)             |
 | `Path`         | `string`   | Vollständiger Pfad beim Provider          |
-| `LastModified` | `DateTime` | Zeitpunkt der letzten Änderung (UTC)      |
+| `LastModified` | `DateTime?` | Zeitpunkt der letzten Änderung (UTC). Null, wenn der Provider keine Zeit liefert. |
 
 #### `FileItem`
 
@@ -300,7 +305,7 @@ Haupt-Interface für alle Transfer-Command-Plugins. Wird vom `TransferLoader` dy
 | `string CommandName`                                         | Eindeutiger Command-Name (z.B. "Copy", "Sync") |
 | `string Description`                                         | Beschreibung des Commands                      |
 | `string Version`                                             | Versionsnummer des Commands                    |
-| `Task<TransferResult> ExecuteAsync(TransferConfigItem, IProvider, IProvider, IProgress<ProgressReport>?, CancellationToken)` | Führt den Transfer-Command asynchron aus       |
+| `Task<TransferResult> ExecuteAsync(TransferContext, CancellationToken)` | Führt den Transfer-Command asynchron aus. Der Host setzt den Kontext; `Progress` ist nie null. |
 
 ### Metadata
 
@@ -325,18 +330,32 @@ public class CopyCommand : ITransferCommand
 
 ### Models
 
-#### `TransferConfigItem`
+#### `TransferContext`
 
-Konfigurationsdaten für einen Transfer-Auftrag. Wird beim Start eines Transfers an `ITransferHandler.ExecuteAsync` übergeben.
+Ausführungskontext eines Transfer-Commands. Der Host löst Provider auf und erzeugt den Fortschritt. Plugins sehen weder Provider-IDs noch Host-Interna.
 
-| Property           | Typ                 | Beschreibung                              |
-| ------------------ | ------------------- | ----------------------------------------- |
-| `TransferId`       | `Guid`              | Eindeutige ID des Transfer-Auftrags       |
-| `SourceProviderId` | `Guid`              | ID des Quell-Providers                    |
-| `SourcePath`       | `string`            | Quellpfad beim Quell-Provider             |
-| `TargetProviderId` | `Guid`              | ID des Ziel-Providers                     |
-| `TargetPath`       | `string`            | Zielpfad beim Ziel-Provider               |
-| `CommandName`      | `string`            | Name des Transfer Commands (Metadaten)    |
+| Property     | Typ                 | Beschreibung                              |
+| ------------ | ------------------- | ----------------------------------------- |
+| `TransferId` | `Guid`              | Eindeutige ID des Transfer-Auftrags       |
+| `SourcePath` | `string`            | Quellpfad beim Quell-Provider             |
+| `TargetPath` | `string`            | Zielpfad beim Ziel-Provider               |
+| `Source`     | `IProvider`         | Bereits initialisierter Quell-Provider    |
+| `Target`     | `IProvider`         | Bereits initialisierter Ziel-Provider     |
+| `Progress`   | `ITransferProgress` | Fortschritt des Hosts, nie null           |
+
+#### `ITransferProgress`
+
+Fortschritts-Helfer auf `TransferContext.Progress`. Plugins erzeugen keinen `ProgressAggregator`.
+
+| Methode | Beschreibung |
+| --- | --- |
+| `Initialize(int totalFiles, long totalBytes)` | Vor dem ersten `StartFile` |
+| `StartFile(string filePath, long fileSize)` | Start einer Datei |
+| `ReportFileProgress(string filePath, long transferredBytes, long totalBytes)` | Byte-Fortschritt |
+| `CompleteFile(string filePath, long fileSize)` | Datei erfolgreich |
+| `FailFile(string filePath, long fileSize)` | Datei fehlgeschlagen (zweiter Parameter ist die Grösse) |
+
+`ProgressAggregator` implementiert dieses Interface und liegt in `TransferX.Transfer.Abstractions.Progress`. Der Host erzeugt die Instanz.
 
 #### `TransferResult`
 
@@ -344,12 +363,11 @@ Gesamtergebnis eines abgeschlossenen Transfer-Auftrags. Aggregiert alle Einzeler
 
 | Property               | Typ                              | Beschreibung                                            |
 | ---------------------- | -------------------------------- | ------------------------------------------------------- |
-| `Success`              | `bool`                           | Transfer vollständig erfolgreich abgeschlossen          |
-| `TotalFiles`           | `int`                            | Gesamtanzahl der zu übertragenden Dateien               |
-| `SuccessfulFiles`      | `int`                            | Anzahl erfolgreich übertragener Dateien                 |
-| `FailedFiles`          | `int`                            | Anzahl fehlgeschlagener Dateiübertragungen              |
-| `TotalBytesTransferred`| `long`                           | Gesamtanzahl der übertragenen Bytes                     |
-| `Duration`             | `TimeSpan`                       | Gesamtdauer des Transfers                               |
+| `Success`              | `bool`                           | Berechnet: `ErrorMessage` ist null und `FailedFiles` ist 0. Nicht setzbar. |
+| `TotalFiles`           | `int`                            | Gefundene Dateien. Vom Plugin gesetzt.                  |
+| `SuccessfulFiles`      | `int`                            | Berechnet aus `FileResults` mit Status `Completed`      |
+| `FailedFiles`          | `int`                            | Berechnet aus `FileResults` mit Status `Failed`         |
+| `TotalBytesTransferred`| `long`                           | Berechnet: Summe von `BytesTransferred`                 |
 | `FileResults`          | `IReadOnlyList<FileTransferResult>` | Detailergebnisse je übertragener Datei              |
 | `ErrorMessage`         | `string?`                        | Fehlermeldung bei globalem Fehler, `null` bei Erfolg    |
 
@@ -413,7 +431,8 @@ Ein neuer Transfer-Command muss:
 1. `ITransferCommand` implementieren (genau ein Command pro Plugin/Assembly)
 2. `[TransferMetadata]` an der Klasse deklarieren
 3. `CommandName` und `Description` über das Interface bereitstellen
-4. Fortschritt über `IProgress<ProgressReport>` an den `ProgressAggregator` melden
+4. Fortschritt über `TransferContext.Progress` (`ITransferProgress`) melden
+5. `TransferX.Core` nicht referenzieren (Build-Sperre der Abstractions-Pakete)
 
 
 
@@ -427,6 +446,7 @@ Ein neuer Transfer-Command muss:
 | **Marker-Pattern**            | `ProviderRequest` / `ProviderResponse` als abstrakte Basisklassen für generische Typconstraints |
 | **Plugin-Discovery** | `ProviderMetadataAttribute` / `TransferMetadataAttribute` als parameterlose Marker-Attribute. Metadaten (CommandName, Description, Version) werden nach Instanziierung direkt über `ITransferCommand` gelesen |
 | **Plugin-Instanziierung** | Provider und Transfer-Commands werden per `Activator.CreateInstance` ohne Argumente erzeugt – ein explizit parameterloser Konstruktor ist Pflicht (Primary Constructors mit optionalen Parametern reichen nicht) |
-| **Fortschritts-Tracking**     | `IProgress<FileProgress>` in Commands/Queries, `IProgress<ProgressReport>` im Transfer-Handler |
+| **Fortschritts-Tracking**     | `IProgress<FileProgress>` in Commands/Queries. Transfer-Plugins melden über `ITransferProgress`; der Host erzeugt den `ProgressAggregator`. |
+| **Build-Sperre**              | Plugin-Projekte dürfen `TransferX.Core` nicht referenzieren. Die Abstractions-Pakete brechen den Build ab. |
 | **Single Command per Plugin** | Ein `ITransferCommand`-Plugin implementiert genau einen Transfer-Command – ermöglicht beliebige Erweiterbarkeit ohne Core-Änderungen |
 
