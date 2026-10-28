@@ -24,6 +24,7 @@ description: >-
 - NuGet-Pakete: **Plural** — `TransferX.Provider.Abstractions`, `TransferX.Transfer.Abstractions`
 - Versionen **nur** aus `sdk/package-versions.json`
 - Kein TransferX-Core-Quellcode ändern
+- Keine `TransferX.Core`-Referenz im Plugin. Die SDK-Pakete erzwingen das per Build-Sperre. Versionen: `3.0.0-preview.1`
 - Keine Submodule, Symlinks oder externe Ordner-Referenzen
 
 ## Workflow: Neues Plugin
@@ -42,6 +43,7 @@ description: >-
 | Konventionen | [docs/conventions/](../../docs/conventions/) |
 | Plugin-Lifecycle | [docs/architecture/plugin-lifecycle.md](../../docs/architecture/plugin-lifecycle.md) |
 | Sync-Regeln | [docs/MIGRATION.md](../../docs/MIGRATION.md) |
+| Versionierung | [docs/conventions/versioning.md](../../docs/conventions/versioning.md) |
 
 ## Skill-Auswahl
 

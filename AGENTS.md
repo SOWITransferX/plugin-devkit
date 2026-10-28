@@ -44,7 +44,7 @@ Kein Primary Constructor als einziger Konstruktor — siehe [docs/architecture/p
 1. [templates/transfer-template/](templates/transfer-template/) kopieren
 2. Platzhalter ersetzen: `MyCommand`, Namespaces
 3. NuGet-Referenz nur auf `TransferX.Transfer.Abstractions` (Version aus `sdk/package-versions.json`)
-4. **Keine** `TransferX.Core`-Referenz im Plugin-Projekt
+4. **Keine** `TransferX.Core`-Referenz im Plugin-Projekt. Die Build-Sperre der Abstractions-Pakete (`3.0.0-preview.1`) bricht den Build ab. Core ist kein Plugin-Paket.
 5. [docs/transfers/implement-transfer-plugin.md](docs/transfers/implement-transfer-plugin.md) befolgen
 6. Referenz: [examples/transfer-dummy.md](examples/transfer-dummy.md)
 

@@ -19,4 +19,4 @@ Lies zuerst [AGENTS.md](../AGENTS.md) und befolge alle dort genannten Anweisunge
 - Codestil: [.editorconfig](../.editorconfig)
 - NuGet-Versionen aus `sdk/package-versions.json`
 - Provider: parameterloser Konstruktor für Plugin-Discovery
-- Transfer-Plugins: keine `TransferX.Core`-Referenz
+- Provider- und Transfer-Plugins: keine `TransferX.Core`-Referenz (Build-Sperre, SDK `3.0.0-preview.1`)
