@@ -45,6 +45,7 @@ Nur plugin-relevante Dokumentation kopieren. Nicht kopieren: Deployment, Runtime
 | `TransferXArchitektur.md` | `docs/architecture/architecture.md` | Kopieren (Plugin-Hinweis) |
 | `CleanArchitectureCodingStandardsBestPractices.md` | `docs/conventions/coding-standards.md` | Kopieren |
 | `TransferXNuGetPackages.md` | `sdk/README.md` | Teilweise (Konsumenten-Sicht) |
+| — (DevKit, kein Core-Dokument) | `docs/conventions/versioning.md` | Neu: SemVer, gleiche Major-Version, Build-Sperre |
 | `TransferXCore.md`, Api, Infrastructure, … | — | Nicht kopieren |
 | `docfx/_site/` | — | Nicht kopieren |
 

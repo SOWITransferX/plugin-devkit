@@ -57,4 +57,19 @@ public sealed class MyProviderTests
         await Assert.ThrowsExceptionAsync<ArgumentException>(
             () => provider.InitializeAsync(config));
     }
+
+    /// <summary>
+    /// Referenztest: kein TransferX.Core.<br/>
+    /// Die Assembly darf Core nicht binden. Die Build-Sperre der Abstractions-Pakete
+    /// weist eine PackageReference zusaetzlich beim Build ab.
+    /// </summary>
+    [TestMethod]
+    public void Referenztest_KeinTransferXCore()
+    {
+        var names = typeof(MyProvider).Assembly
+            .GetReferencedAssemblies()
+            .Select(assembly => assembly.Name);
+
+        Assert.IsFalse(names.Contains("TransferX.Core"));
+    }
 }

@@ -1,4 +1,4 @@
-﻿<!-- Migriert aus TransferX\Source\TransferX\docs, Stand: 2026-06-26 -->
+﻿<!-- Angepasst an NuGet TransferX.Provider.Abstractions 3.0.0-preview.1, Stand: 2026-10-28. Sync: docs/MIGRATION.md. -->
 
 # Provider Plugin implementieren
 
@@ -84,9 +84,15 @@ sequenceDiagram
 ## 2. Voraussetzungen und Abhängigkeiten
 
 Das neue Plugin-Projekt benötigt ausschliesslich eine Referenz auf `TransferX.Provider.Abstractions`.  
-**Keine** Referenz auf Core, Application, Infrastructure oder Domain ist erlaubt oder nötig.    
+**Keine** Referenz auf Core, Application, Infrastructure oder Domain ist erlaubt oder nötig. `TransferX.Domain` kommt transitiv.
 
-Die `TransferX.Provider.Abstractions` und `TransferX.Provider.Domain` gibt es als `NuGet` Package.
+**Build-Sperre:** Eine `PackageReference` auf `TransferX.Core` oder eine `ProjectReference` auf `TransferX.Core.csproj` bricht den Build ab:
+
+```text
+TransferX-Plugins dürfen TransferX.Core nicht referenzieren – nur TransferX.Provider.Abstractions / TransferX.Transfer.Abstractions.
+```
+
+Version aus [sdk/package-versions.json](../../sdk/package-versions.json): **3.0.0-preview.1**. Host und Plugin verwenden dieselbe Major-Version, siehe [Versionierung](../conventions/versioning.md).
 
 ```mermaid
 graph LR
@@ -115,7 +121,8 @@ Beispiel: TransferX.Provider.MyFtp\TransferX.Provider.MyFtp.csproj
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TransferX.Provider.Abstractions" Version="2.0.0" />
+    <!-- Version aus sdk/package-versions.json. Keine TransferX.Core-Referenz. -->
+    <PackageReference Include="TransferX.Provider.Abstractions" Version="3.0.0-preview.1" />
   </ItemGroup>
 
 </Project>
@@ -881,5 +888,6 @@ Vor dem Deployment des neuen Providers alle Punkte prüfen:
 | 13 | Datei-Header in jeder `.cs`-Datei vorhanden | ☐ |
 | 14 | XML-Kommentare (`///`) für alle `public` Members vorhanden | ☐ |
 | 15 | Plugin-Assembly inkl. eigener Abhängigkeiten im Plugin-Verzeichnis deployt | ☐ |
-| 16 | Shared-DLLs (`TransferX.Provider.Abstractions`, `TransferX.Domain`) vom Host geteilt; Mitlieferung beim Publish ist unkritisch | ☐ |
+| 16 | Shared-DLLs (`TransferX.Provider.Abstractions`, `TransferX.Domain`) vom Host geteilt; dieselbe Major-Version; Mitlieferung beim Publish ist unkritisch | ☐ |
+| 17 | Keine `TransferX.Core`-Referenz (Build-Sperre) | ☐ |
 

@@ -1,15 +1,17 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "description": "Kanonische NuGet-Versionen für TransferX Plugin-Entwicklung. Alle Templates und .csproj-Dateien müssen diese Versionen verwenden.",
-  "lastUpdated": "2026-06-26",
+  "lastUpdated": "2026-10-28",
   "packages": {
-    "TransferX.Provider.Abstractions": "26.5.5",
-    "TransferX.Transfer.Abstractions": "26.5.5",
-    "TransferX.Domain": "26.5.5"
+    "TransferX.Provider.Abstractions": "3.0.0-preview.1",
+    "TransferX.Transfer.Abstractions": "3.0.0-preview.1",
+    "TransferX.Domain": "3.0.0-preview.1"
   },
   "notes": [
     "Paketnamen immer Plural: Abstractions (nicht Abstraction).",
-    "Versionen entsprechen dem höchsten bekannten Stand (Provider-Dummy 26.5.5).",
+    "Versionen entsprechen SDK 3.0.0-preview.1. Das ist eine Preview; der Final-Bump auf 3.0.0 folgt nach der Abnahme.",
+    "Core ist kein Plugin-Paket. Eine Referenz auf TransferX.Core bricht den Plugin-Build ab (Build-Sperre in den Abstractions-Paketen).",
+    "Host und Plugins verwenden dieselbe Major-Version der drei SDK-Pakete. Details: docs/conventions/versioning.md.",
     "Bei Abstractions-Release manuell oder per KI-Agent aktualisieren."
   ]
 }

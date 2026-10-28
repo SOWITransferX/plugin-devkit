@@ -1,6 +1,6 @@
 # Transfer Contracts
 
-<!-- Abgeleitet aus TransferX\Source\TransferX\docs\TransferXAbstractions.md, Stand: 2026-06-26 -->
+<!-- Abgeleitet aus TransferX.Transfer.Abstractions 3.0.0-preview.1 (XML-Doku und Paket-README), Stand: 2026-10-28. Sync: docs/MIGRATION.md. -->
 
 Markdown-Referenz der Transfer-Schnittstellen. Quellcode und NuGet-Paket: `TransferX.Transfer.Abstractions`.
 
@@ -13,9 +13,11 @@ Markdown-Referenz der Transfer-Schnittstellen. Quellcode und NuGet-Paket: `Trans
 | `string CommandName` | Eindeutiger Name (z.B. `"Copy"`) |
 | `string Description` | Beschreibung |
 | `string Version` | Versionsnummer |
-| `ExecuteAsync(TransferConfigItem, IProvider source, IProvider target, IProgress<ProgressReport>?, CancellationToken)` | Transfer ausführen |
+| `ExecuteAsync(TransferContext context, CancellationToken cancellationToken)` | Transfer ausführen |
 
 **Regel:** Genau **ein** `ITransferCommand` pro Plugin-Assembly.
+
+Der Host setzt `TransferContext`. Plugins sehen keine Provider-IDs und erzeugen keinen `ProgressAggregator`.
 
 ## Metadata
 
@@ -23,27 +25,48 @@ Markdown-Referenz der Transfer-Schnittstellen. Quellcode und NuGet-Paket: `Trans
 
 Marker für Plugin-Discovery via `TransferLoader`.
 
-## Models
+## Modelle
 
-### `TransferConfigItem`
+### `TransferContext`
 
-| Property | Beschreibung |
+Sealed Record. Ausführungskontext, den der Host übergibt.
+
+| Property | Typ | Beschreibung |
+| --- | --- | --- |
+| `TransferId` | `Guid` | Eindeutige Transfer-ID |
+| `SourcePath` | `string` | Quellpfad |
+| `TargetPath` | `string` | Zielpfad |
+| `Source` | `IProvider` | Bereits initialisierter Quell-Provider |
+| `Target` | `IProvider` | Bereits initialisierter Ziel-Provider |
+| `Progress` | `ITransferProgress` | Fortschritt des Hosts, **nie null** |
+
+### `ITransferProgress`
+
+Namespace `TransferX.Transfer.Abstractions.Progress`. Der Host übergibt die Implementierung (`ProgressAggregator` aus demselben Paket).
+
+| Methode | Beschreibung |
 | --- | --- |
-| `TransferId` | Eindeutige Transfer-ID |
-| `SourceProviderId` / `SourcePath` | Quelle |
-| `TargetProviderId` / `TargetPath` | Ziel |
-| `CommandName` | Name des Commands |
+| `Initialize(int totalFiles, long totalBytes)` | Vor dem ersten `StartFile` |
+| `StartFile(string filePath, long fileSize)` | Dateiübertragung beginnt |
+| `ReportFileProgress(string filePath, long transferredBytes, long totalBytes)` | Byte-Fortschritt einer laufenden Datei |
+| `CompleteFile(string filePath, long fileSize)` | Datei erfolgreich abgeschlossen |
+| `FailFile(string filePath, long fileSize)` | Datei fehlgeschlagen. Der zweite Parameter ist die Dateigrösse, keine Fehlermeldung. |
 
 ### `TransferResult`
 
+Zähler und Erfolg werden berechnet. Plugins setzen `TotalFiles`, `FileResults` und optional `ErrorMessage`.
+
 | Property | Beschreibung |
 | --- | --- |
-| `Success` | Gesamterfolg |
-| `TotalFiles`, `SuccessfulFiles`, `FailedFiles` | Dateizähler |
-| `TotalBytesTransferred` | Bytes gesamt |
-| `Duration` | Dauer |
+| `Success` | Berechnet: `ErrorMessage` ist null und `FailedFiles` ist 0. Nicht setzbar. |
+| `TotalFiles` | Gefundene Dateien. Vom Plugin gesetzt. |
+| `SuccessfulFiles` | Berechnet aus `FileResults` mit Status `Completed` |
+| `FailedFiles` | Berechnet aus `FileResults` mit Status `Failed` |
+| `TotalBytesTransferred` | Berechnet: Summe von `BytesTransferred` |
 | `FileResults` | Detail pro Datei |
-| `ErrorMessage` | Fehler bei globalem Fehler |
+| `ErrorMessage` | Globaler Fehler, `null` bei Erfolg |
+
+`Duration` ist kein Member von `TransferResult`.
 
 ### `FileTransferResult`
 
@@ -51,14 +74,15 @@ Ergebnis pro Datei: `FileName`, `SourcePath`, `Status`, `ErrorMessage`, `BytesTr
 
 ## Typischer ExecuteAsync-Ablauf
 
-1. Dateien am Quell-Provider auflisten (`ListFilesRequest`)
-2. Pro Datei: Download (`DownloadFileRequest`) → Upload (`UploadFileRequest`)
-3. Fortschritt über `IProgress<ProgressReport>` melden
-4. `OperationCanceledException` durchreichen
+1. Dateien am Quell-Provider auflisten (`ListFilesRequest` über `context.Source`)
+2. `context.Progress.Initialize` mit Anzahl und Gesamtgrösse
+3. Pro Datei: `StartFile`, Download, Upload über `context.Target`, dann `CompleteFile` oder `FailFile`
+4. `TransferResult` mit `TotalFiles` und `FileResults` zurückgeben
+5. `OperationCanceledException` durchreichen
 
 ## Abhängigkeiten
 
-- NuGet: **nur** `TransferX.Transfer.Abstractions`
-- **Keine** `TransferX.Core`-Referenz im Plugin-Projekt
+- NuGet: **nur** `TransferX.Transfer.Abstractions` (Version aus [package-versions.json](../package-versions.json))
+- **Build-Sperre:** keine `TransferX.Core`-Referenz. Der Build bricht mit der Sperrmeldung ab.
 
 Details: [docs/transfers/implement-transfer-plugin.md](../../docs/transfers/implement-transfer-plugin.md)

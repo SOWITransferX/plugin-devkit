@@ -10,8 +10,8 @@
 
   <ItemGroup>
     <!-- Version aus plugin-devkit/sdk/package-versions.json -->
-    <!-- Keine TransferX.Core-Referenz -->
-    <PackageReference Include="TransferX.Transfer.Abstractions" Version="26.5.5" />
+    <!-- Build-Sperre: eine TransferX.Core-Referenz bricht den Build ab. -->
+    <PackageReference Include="TransferX.Transfer.Abstractions" Version="3.0.0-preview.1" />
   </ItemGroup>
 
 </Project>

@@ -13,7 +13,15 @@ Scaffold fuer ein neues TransferX Transfer-Plugin.
 
 Version in `.csproj`-Dateien aus [sdk/package-versions.json](../../sdk/package-versions.json) uebernehmen.
 
-**Keine** `TransferX.Core`-Referenz — nur `TransferX.Transfer.Abstractions`.
+**Keine** `TransferX.Core`-Referenz — nur `TransferX.Transfer.Abstractions` (`3.0.0-preview.1`).
+
+`ExecuteAsync` erhält einen `TransferContext`. Fortschritt ist `Mock<ITransferProgress>` im Test und `context.Progress` zur Laufzeit.
+
+**Build-Sperre:** Eine zusätzliche `PackageReference` auf `TransferX.Core` bricht den Build ab:
+
+```text
+TransferX-Plugins dürfen TransferX.Core nicht referenzieren – nur TransferX.Provider.Abstractions / TransferX.Transfer.Abstractions.
+```
 
 ## Struktur
 

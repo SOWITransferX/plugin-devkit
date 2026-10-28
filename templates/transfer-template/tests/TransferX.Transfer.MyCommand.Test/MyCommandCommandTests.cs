@@ -4,7 +4,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TransferX.Provider.Abstractions;
-using TransferX.Transfer.Abstractions.Models;
+using TransferX.Transfer.Abstractions;
+using TransferX.Transfer.Abstractions.Progress;
 
 namespace TransferX.Transfer.MyCommand.Test;
 
@@ -34,25 +35,12 @@ public sealed class MyCommandCommandTests
     public async Task ExecuteAsync_ReturnsEmptySuccessResult()
     {
         var command = new MyCommandCommand();
-        var sourceMock = new Mock<IProvider>();
-        var targetMock = new Mock<IProvider>();
-        var config = new TransferConfigItem
-        {
-            TransferId = Guid.NewGuid(),
-            SourceProviderId = Guid.NewGuid(),
-            SourcePath = "/source",
-            TargetProviderId = Guid.NewGuid(),
-            TargetPath = "/target",
-            CommandName = "MyCommand"
-        };
 
-        var result = await command.ExecuteAsync(
-            config,
-            sourceMock.Object,
-            targetMock.Object);
+        var result = await command.ExecuteAsync(CreateContext());
 
         Assert.IsTrue(result.Success);
         Assert.AreEqual(0, result.TotalFiles);
+        Assert.AreEqual(0, result.FailedFiles);
     }
 
     /// <summary>
@@ -62,24 +50,42 @@ public sealed class MyCommandCommandTests
     public async Task ExecuteAsync_Cancelled_ThrowsOperationCanceledException()
     {
         var command = new MyCommandCommand();
-        var sourceMock = new Mock<IProvider>();
-        var targetMock = new Mock<IProvider>();
         using var cts = new CancellationTokenSource();
         await cts.CancelAsync();
 
         await Assert.ThrowsExceptionAsync<OperationCanceledException>(
-            () => command.ExecuteAsync(
-                new TransferConfigItem
-                {
-                    TransferId = Guid.NewGuid(),
-                    SourceProviderId = Guid.NewGuid(),
-                    SourcePath = "/",
-                    TargetProviderId = Guid.NewGuid(),
-                    TargetPath = "/",
-                    CommandName = "MyCommand"
-                },
-                sourceMock.Object,
-                targetMock.Object,
-                cancellationToken: cts.Token));
+            () => command.ExecuteAsync(CreateContext(), cts.Token));
+    }
+
+    /// <summary>
+    /// Referenztest: kein TransferX.Core.<br/>
+    /// Die Assembly darf Core nicht binden. Die Build-Sperre der Abstractions-Pakete
+    /// weist eine PackageReference zusaetzlich beim Build ab.
+    /// </summary>
+    [TestMethod]
+    public void Referenztest_KeinTransferXCore()
+    {
+        var names = typeof(MyCommandCommand).Assembly
+            .GetReferencedAssemblies()
+            .Select(assembly => assembly.Name);
+
+        Assert.IsFalse(names.Contains("TransferX.Core"));
+    }
+
+    /// <summary>
+    /// Baut einen Host-Kontext mit Mock-Providern und Mock fuer ITransferProgress.
+    /// </summary>
+    /// <returns>Ausfuehrungskontext fuer den Scaffold-Command.</returns>
+    private static TransferContext CreateContext()
+    {
+        return new TransferContext
+        {
+            TransferId = Guid.NewGuid(),
+            SourcePath = "/source",
+            TargetPath = "/target",
+            Source = new Mock<IProvider>().Object,
+            Target = new Mock<IProvider>().Object,
+            Progress = new Mock<ITransferProgress>().Object,
+        };
     }
 }

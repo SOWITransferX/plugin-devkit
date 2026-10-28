@@ -125,7 +125,7 @@ Siehe Dokumentation  [../../README.md](../../README.md)
 | TransferEngine     | Transfer Engine                 | Kernlogik für Transfers Operation, Konfiguration, nutzt ProviderEngine und Progress |
 | ProviderLoader     | Provider Loader                 | Dynamisches Laden von Provider‑Plugins über Abstractions.    |
 | TransferLoader     | Transfer Loader                 | Dynamisches Laden von Transfer‑Plugins über Abstractions.    |
-| ProgressAggregator | Multi‑Level Progress Aggregator | Aggregiert Fortschritt über mehrere Ebenen (Transfer → File → Byte). |
+| ProgressAggregator | ITransferProgress aus Transfer.Abstractions | Der Host erzeugt den Aggregator. Plugins melden Fortschritt nur über `ITransferProgress` und referenzieren `TransferX.Core` nicht. |
 
 ### Domain Layer
 
@@ -149,7 +149,7 @@ Siehe Dokumentation  [TransferXAbstractions.md](../architecture/abstractions.md)
 | Element     | Bezeichnung           | Beschreibung                                                 |
 | ----------- | --------------------- | ------------------------------------------------------------ |
 | ProviderAbs | Provider.Abstractions | Interfaces für Provider (IProvider, IProgress Parameter).    |
-| TransferAbs | Transfer.Abstractions | Interfaces für Transfer‑Commands (ITransferCommand) und ProgressAggregator. |
+| TransferAbs | Transfer.Abstractions | `ITransferCommand`, `TransferContext`, `ITransferProgress` und `ProgressAggregator`. Build-Sperre gegen `TransferX.Core`. |
 
 ### Infrastructure
 
@@ -172,7 +172,7 @@ Siehe Dokumentation  [TransferXImplementProviderPlugin.md](../providers/implemen
 | Element  | Bezeichnung | Beschreibung                                                 |
 | -------- | ----------- | ------------------------------------------------------------ |
 | Provider | Provider.*  | Provider‑Implementierung (Commands/Queries und Progress).    |
-| Transfer | Transfer.*  | Transfer‑Implementierung (je Plugin genau ein ITransferCommand mit CommandName, Description und ProgressAggregator). |
+| Transfer | Transfer.*  | Je Plugin genau ein `ITransferCommand`. Fortschritt über `TransferContext.Progress`. Keine `TransferX.Core`-Referenz. |
 
 
 
@@ -236,7 +236,10 @@ graph TD
         TransferEngine["Transfer Engine"]
         ProviderLoader["Provider Loader"]
         TransferLoader["Transfer Loader"]
-        ProgressAggregator["Progress Aggregator"]
+    end
+
+    subgraph Abstractions["📦 Abstractions"]
+        ProgressAggregator["ProgressAggregator / ITransferProgress"]
     end
 
     subgraph Domain["💎 Domain Layer"]
@@ -338,7 +341,7 @@ graph TD
 | **Abstractions**         | Getrennt: `Provider.Abstractions` & `Transfer.Abstractions` | Klare Trennung, unabhängige Versionierung       |
 | **Application Features** | Getrennt: Provider Features & Transfer Features             | Unterschiedliche Use Cases, Nutzer, Komplexität |
 | **Command Pattern**      | Für Provider-Operationen & Transfer-Execution               | Testbarkeit, Retry-Fähigkeit, Konsistenz        |
-| **Progress Handling**    | Multi-Level IProgress<T> Integration                        | Echtzeit-Feedback, Performance-Tracking         |
+| **Progress Handling**    | Host erzeugt `ITransferProgress`; Plugins melden darüber    | Echtzeit-Feedback ohne Core-Referenz im Plugin  |
 | **Core Engines**         | Getrennt: ProviderEngine & TransferEngine                   | TransferEngine nutzt ProviderEngine             |
 | **Transfer Command**     | Command basierte Transfer Plugins                           | Erweiterbarkeit auch durch dritte               |
 
@@ -466,6 +469,7 @@ Third‑Party‑Plugins sollen ohne Core‑Änderungen integrierbar sein.
 | Core → Domain                | ✅ Ja     | Direkt                                                  |
 | Core → Abstractions          | ✅ Ja     | Für Plugin-Loading                                      |
 | Plugins → Abstractions       | ✅ Ja     | Implementieren Interfaces (IProvider, ITransferCommand) |
+| Plugins → Core               | ❌ Nein   | Build-Sperre: keine Referenz auf `TransferX.Core`       |
 | Abstractions → Domain        | ✅ Ja     | Nutzen Value Objects                                    |
 | Infrastructure → Application | ✅ Ja     | Implementieren Ports                                    |
 | Domain → ❌ Alle              | ❌ Nein   | **Keine** Abhängigkeiten nach außen                     |
@@ -500,7 +504,8 @@ Ein neuer Transfer muss:
 - `ITransferCommand` implementieren (genau ein Command pro Plugin)
 - `[TransferMetadata]` Attribut besitzen (Plugin-Discovery)
 - `CommandName` und `Description` über das Interface bereitstellen
-- Progress an `ProgressAggregator` melden
+- Fortschritt über `TransferContext.Progress` (`ITransferProgress`) melden
+- `TransferX.Core` nicht referenzieren (Build-Sperre)
 - über `TransferLoader` geladen werden
 
 **Beispiele:** Copy, Sync, Backup, Mirror
@@ -545,8 +550,8 @@ graph TD
         ProgressDomain["Progress Domain Models"]
     end
 
-    subgraph Core["⚙️ Core"]
-        ProgressAggregator["ProgressAggregator (Multi-Level)"]
+    subgraph Abstractions["📦 Transfer.Abstractions"]
+        ProgressAggregator["ProgressAggregator (ITransferProgress)"]
     end
 
     subgraph Application["📋 Application"]
@@ -613,12 +618,12 @@ end
 subgraph Core["⚙️ Core Engine"]
     Engine["ProviderEngine, TransferEngine"]
     Loader["ProviderLoader, TransferLoader"]
-    ProgressAggregator["ProgressAggregator"]
 end
 
 %% ===== ABSTRACTIONS =====
 subgraph Abstractions["📦 Abstractions"]
-    IAbstractions["IProvider, ITransferCommand"]
+    IAbstractions["IProvider, ITransferCommand, TransferContext"]
+    ProgressAggregator["ITransferProgress / ProgressAggregator"]
 end
 
 %% ===== PLUGINS =====
@@ -651,8 +656,6 @@ Loader --> IAbstractions
 
 Provider --> IAbstractions
 Transfer --> IAbstractions
-
-Provider --> ProgressAggregator
 Transfer --> ProgressAggregator
 
 ProgressAggregator --> ProgressStream
@@ -701,8 +704,8 @@ sequenceDiagram
     TE->>PE: Prepare Providers
     PE-->>TE: Provider Ready
 
-    TE->>TC: Execute (Inject IProgress#35;ProgressReport#35;)
-    TC->>PR: Report Progress (via IProgressReporter)
+    TE->>TC: ExecuteAsync(TransferContext)
+    TC->>TC: Fortschritt über ITransferProgress
 
     PR-->>UI: Push Updates
 
@@ -741,8 +744,8 @@ sequenceDiagram
     TE->>PE: Prepare Providers
     PE-->>TE: Provider Ready
 
-    TE->>TC: Execute (Inject IProgressReporter)
-    TC->>PR: Report Progress
+    TE->>TC: ExecuteAsync(TransferContext mit ITransferProgress)
+    TC->>TC: context.Progress.Initialize / CompleteFile
 
     PR-->>UI: Push Updates
 
@@ -760,6 +763,6 @@ sequenceDiagram
 3. TransferEngine lädt ProviderEngine
 4. ProviderEngine lädt Provider Plugins
 5. TransferEngine orchestriert Transfer
-6. IProgressReporter forward to ProgressReporter sammelt Fortschritt
+6. Das Plugin meldet Fortschritt über `ITransferProgress`; der Host reicht ihn an `IProgressReporter` weiter
 7. ProgressReporter sendet Updates an UI
 
