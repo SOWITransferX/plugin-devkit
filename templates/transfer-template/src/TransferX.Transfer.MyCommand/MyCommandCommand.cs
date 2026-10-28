@@ -1,8 +1,6 @@
 // SOWI Informatik, www.sowi.ch
 // Franz Schönbächler
 
-using TransferX.Domain.ValueObjects.Progress;
-using TransferX.Provider.Abstractions;
 using TransferX.Transfer.Abstractions;
 using TransferX.Transfer.Abstractions.Metadata;
 using TransferX.Transfer.Abstractions.Models;
@@ -28,33 +26,24 @@ public sealed class MyCommandCommand : ITransferCommand
 
     /// <inheritdoc/>
     public Task<TransferResult> ExecuteAsync(
-        TransferConfigItem config,
-        IProvider sourceProvider,
-        IProvider targetProvider,
-        IProgress<ProgressReport>? progress = null,
+        TransferContext context,
         CancellationToken cancellationToken = default)
     {
-        _ = config;
-        _ = sourceProvider;
-        _ = targetProvider;
-        _ = progress;
+        // SDK 3.0.0-preview.1 liefert Provider und Fortschritt über TransferContext.
+        // Success, Dateizaehler und Bytes berechnet TransferResult; Duration entfaellt.
+        _ = context;
 
-        var startTime = DateTime.UtcNow;
         var fileResults = new List<FileTransferResult>();
 
         try
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            // TODO: ListFiles → Download → Upload implementieren
+            // TODO: ListFiles → Download → Upload implementieren.
+            // Fortschritt über context.Progress (ITransferProgress) melden.
             return Task.FromResult(new TransferResult
             {
-                Success = true,
                 TotalFiles = 0,
-                SuccessfulFiles = 0,
-                FailedFiles = 0,
-                TotalBytesTransferred = 0,
-                Duration = DateTime.UtcNow - startTime,
                 FileResults = fileResults.AsReadOnly()
             });
         }
@@ -66,12 +55,7 @@ public sealed class MyCommandCommand : ITransferCommand
         {
             return Task.FromResult(new TransferResult
             {
-                Success = false,
                 TotalFiles = 0,
-                SuccessfulFiles = 0,
-                FailedFiles = 0,
-                TotalBytesTransferred = 0,
-                Duration = DateTime.UtcNow - startTime,
                 FileResults = fileResults.AsReadOnly(),
                 ErrorMessage = ex.Message
             });
