@@ -44,7 +44,7 @@ public sealed class MyCommandCommand : ITransferCommand
             return Task.FromResult(new TransferResult
             {
                 TotalFiles = 0,
-                FileResults = fileResults.AsReadOnly()
+                FileResults = fileResults.AsReadOnly(),
             });
         }
         catch (OperationCanceledException)
@@ -57,7 +57,7 @@ public sealed class MyCommandCommand : ITransferCommand
             {
                 TotalFiles = 0,
                 FileResults = fileResults.AsReadOnly(),
-                ErrorMessage = ex.Message
+                ErrorMessage = ex.Message,
             });
         }
     }

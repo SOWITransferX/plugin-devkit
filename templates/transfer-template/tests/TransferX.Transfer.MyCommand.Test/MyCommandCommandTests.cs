@@ -85,7 +85,7 @@ public sealed class MyCommandCommandTests
             TargetPath = "/target",
             Source = new Mock<IProvider>().Object,
             Target = new Mock<IProvider>().Object,
-            Progress = new Mock<ITransferProgress>().Object
+            Progress = new Mock<ITransferProgress>().Object,
         };
     }
 }
