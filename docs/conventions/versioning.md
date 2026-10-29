@@ -1,4 +1,4 @@
-<!-- DevKit-Konvention, Stand: 2026-10-28. Abgestimmt auf die NuGet-Pakete TransferX.* 3.0.0-preview.1. Nicht aus TransferX.Core kopiert; Sync-Regeln siehe docs/MIGRATION.md. -->
+<!-- DevKit-Konvention, Stand: 2026-10-28. Abgestimmt auf die NuGet-Pakete TransferX.* 3.0.0. Nicht aus TransferX.Core kopiert; Sync-Regeln siehe docs/MIGRATION.md. -->
 
 # Versionierung der SDK-Pakete
 
@@ -19,11 +19,11 @@ Die Plugin-SDK-Pakete folgen [Semantic Versioning](https://semver.org/lang/de/).
 | Major | Brechende Änderung am Plugin-Vertrag (Signatur, entfernte Member, geänderte Semantik). |
 | Minor | Rückwärtskompatible Ergänzung. |
 | Patch | Fehlerkorrektur ohne Vertragsbruch. |
-| Preview | Vorschau, z. B. `3.0.0-preview.1`. Kein stabiles Release. |
+| Preview | Vorschau mit Pre-Release-Suffix. Kein stabiles Release. |
 
 Die kanonische Version steht in [sdk/package-versions.json](../../sdk/package-versions.json). Templates und Plugin-Projekte übernehmen diese Version wörtlich.
 
-Aktueller Stand: **3.0.0-preview.1**. Ein späterer Stand `3.0.0` ist ein eigener Versionswechsel und kein Ersatz für diese Preview.
+Aktueller Stand: **3.0.0**.
 
 ## Gleiche Major-Version
 

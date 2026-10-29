@@ -1,6 +1,6 @@
 # Provider Contracts
 
-<!-- Abgeleitet aus TransferX.Provider.Abstractions 3.0.0-preview.1 (XML-Doku und Paket-README), Stand: 2026-10-28. Sync: docs/MIGRATION.md. -->
+<!-- Abgeleitet aus TransferX.Provider.Abstractions 3.0.0 (XML-Doku und Paket-README), Stand: 2026-10-28. Sync: docs/MIGRATION.md. -->
 
 Markdown-Referenz der Provider-Schnittstellen. Quellcode und NuGet-Paket: `TransferX.Provider.Abstractions`.
 
@@ -60,7 +60,7 @@ Marker für Plugin-Discovery. Metadaten (`Name`, `Version`, `ProviderType`) übe
 TransferX-Plugins dürfen TransferX.Core nicht referenzieren – nur TransferX.Provider.Abstractions / TransferX.Transfer.Abstractions.
 ```
 
-Version: [package-versions.json](../package-versions.json) (`3.0.0-preview.1`).
+Version: [package-versions.json](../package-versions.json) (`3.0.0`).
 
 ## Implementierungs-Checkliste
 

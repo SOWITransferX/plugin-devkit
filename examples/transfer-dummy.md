@@ -43,7 +43,7 @@ Transfer-Dummy/
 
 Referenziert `TransferX.Transfer.Abstractions` — Version siehe [sdk/package-versions.json](../sdk/package-versions.json).
 
-> **Hinweis:** Das DevKit-Template referenziert nur `TransferX.Transfer.Abstractions` `3.0.0-preview.1`.
+> **Hinweis:** Das DevKit-Template referenziert nur `TransferX.Transfer.Abstractions` `3.0.0`.
 > `ExecuteAsync` nimmt einen `TransferContext`; Fortschritt läuft über `ITransferProgress`.
 > Eine `TransferX.Core`-Referenz bricht den Build ab (Build-Sperre). Das GitHub-Repo kann historisch noch Core enthalten, bis es auf dieselbe Major-Version nachgezogen ist.
 

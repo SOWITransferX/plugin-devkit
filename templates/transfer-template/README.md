@@ -13,7 +13,7 @@ Scaffold fuer ein neues TransferX Transfer-Plugin.
 
 Version in `.csproj`-Dateien aus [sdk/package-versions.json](../../sdk/package-versions.json) uebernehmen.
 
-**Keine** `TransferX.Core`-Referenz — nur `TransferX.Transfer.Abstractions` (`3.0.0-preview.1`).
+**Keine** `TransferX.Core`-Referenz — nur `TransferX.Transfer.Abstractions` (`3.0.0`).
 
 `ExecuteAsync` erhält einen `TransferContext`. Fortschritt ist `Mock<ITransferProgress>` im Test und `context.Progress` zur Laufzeit.
 
