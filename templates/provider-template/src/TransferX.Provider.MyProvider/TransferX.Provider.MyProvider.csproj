@@ -15,7 +15,7 @@
   <ItemGroup>
     <!-- Version aus plugin-devkit/sdk/package-versions.json -->
     <!-- Build-Sperre: eine TransferX.Core-Referenz bricht den Build ab. -->
-    <PackageReference Include="TransferX.Provider.Abstractions" Version="3.0.0-preview.1" />
+    <PackageReference Include="TransferX.Provider.Abstractions" Version="3.0.0" />
   </ItemGroup>
 
 </Project>

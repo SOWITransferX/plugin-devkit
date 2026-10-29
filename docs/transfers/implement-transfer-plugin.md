@@ -1,4 +1,4 @@
-﻿<!-- Angepasst an NuGet TransferX.Transfer.Abstractions 3.0.0-preview.1, Stand: 2026-10-28. Sync: docs/MIGRATION.md. -->
+﻿<!-- Angepasst an NuGet TransferX.Transfer.Abstractions 3.0.0, Stand: 2026-10-28. Sync: docs/MIGRATION.md. -->
 
 # Transfer Plugin implementieren
 
@@ -118,7 +118,7 @@ Das Plugin-Projekt benötigt genau eine TransferX-Referenz: `TransferX.Transfer.
 TransferX-Plugins dürfen TransferX.Core nicht referenzieren – nur TransferX.Provider.Abstractions / TransferX.Transfer.Abstractions.
 ```
 
-Version aus [sdk/package-versions.json](../../sdk/package-versions.json): **3.0.0-preview.1**. Host und Plugin verwenden dieselbe Major-Version, siehe [Versionierung](../conventions/versioning.md).
+Version aus [sdk/package-versions.json](../../sdk/package-versions.json): **3.0.0**. Host und Plugin verwenden dieselbe Major-Version, siehe [Versionierung](../conventions/versioning.md).
 
 ```mermaid
 graph LR
@@ -148,7 +148,7 @@ Beispiel: TransferX.Transfer.MyCopy\TransferX.Transfer.MyCopy.csproj
 
   <ItemGroup>
     <!-- Version aus sdk/package-versions.json. Keine TransferX.Core-Referenz. -->
-    <PackageReference Include="TransferX.Transfer.Abstractions" Version="3.0.0-preview.1" />
+    <PackageReference Include="TransferX.Transfer.Abstractions" Version="3.0.0" />
   </ItemGroup>
 
 </Project>

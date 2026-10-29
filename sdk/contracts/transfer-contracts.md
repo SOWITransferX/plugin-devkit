@@ -1,6 +1,6 @@
 # Transfer Contracts
 
-<!-- Abgeleitet aus TransferX.Transfer.Abstractions 3.0.0-preview.1 (XML-Doku und Paket-README), Stand: 2026-10-28. Sync: docs/MIGRATION.md. -->
+<!-- Abgeleitet aus TransferX.Transfer.Abstractions 3.0.0 (XML-Doku und Paket-README), Stand: 2026-10-28. Sync: docs/MIGRATION.md. -->
 
 Markdown-Referenz der Transfer-Schnittstellen. Quellcode und NuGet-Paket: `TransferX.Transfer.Abstractions`.
 

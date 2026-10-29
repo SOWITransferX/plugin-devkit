@@ -1,12 +1,12 @@
 # SDK — NuGet-Pakete für Plugin-Entwicklung
 
-<!-- Angepasst an NuGet TransferX.* 3.0.0-preview.1, Stand: 2026-10-28. Sync: docs/MIGRATION.md (Konsumenten-Sicht von TransferXNuGetPackages.md). -->
+<!-- Angepasst an NuGet TransferX.* 3.0.0, Stand: 2026-10-28. Sync: docs/MIGRATION.md (Konsumenten-Sicht von TransferXNuGetPackages.md). -->
 
 Plugin-Projekte konsumieren die TransferX-Schnittstellen als **NuGet-Pakete** — kein Quellcode-Spiegel im DevKit.
 
 ## Kanonische Versionen
 
-Alle Versionen stehen zentral in [package-versions.json](package-versions.json). Stand: **3.0.0-preview.1** (Preview, nicht `3.0.0`).
+Alle Versionen stehen zentral in [package-versions.json](package-versions.json). Stand: **3.0.0**.
 
 | NuGet-Paket-ID | Zweck | Typische Referenz in |
 | --- | --- | --- |
@@ -24,7 +24,7 @@ Alle Versionen stehen zentral in [package-versions.json](package-versions.json).
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="TransferX.Provider.Abstractions" Version="3.0.0-preview.1" />
+  <PackageReference Include="TransferX.Provider.Abstractions" Version="3.0.0" />
 </ItemGroup>
 ```
 
@@ -34,7 +34,7 @@ Version aus [package-versions.json](package-versions.json) übernehmen.
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="TransferX.Transfer.Abstractions" Version="3.0.0-preview.1" />
+  <PackageReference Include="TransferX.Transfer.Abstractions" Version="3.0.0" />
 </ItemGroup>
 ```
 

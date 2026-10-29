@@ -29,7 +29,7 @@ public sealed class MyCommandCommand : ITransferCommand
         TransferContext context,
         CancellationToken cancellationToken = default)
     {
-        // SDK 3.0.0-preview.1 liefert Provider und Fortschritt über TransferContext.
+        // SDK 3.0.0 liefert Provider und Fortschritt über TransferContext.
         // Success, Dateizaehler und Bytes berechnet TransferResult; Duration entfaellt.
         _ = context;
 

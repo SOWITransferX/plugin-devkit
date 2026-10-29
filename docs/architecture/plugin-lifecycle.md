@@ -1,6 +1,6 @@
 # Plugin-Lifecycle
 
-<!-- Angepasst an SDK 3.0.0-preview.1, Stand: 2026-10-28. -->
+<!-- Angepasst an SDK 3.0.0, Stand: 2026-10-28. -->
 
 Lebenszyklus eines TransferX-Plugins von der Discovery bis zum Deployment.
 
@@ -26,7 +26,7 @@ Plugin als .NET 8 Class Library mit NuGet-Referenz auf Abstractions:
 - Provider: `TransferX.Provider.Abstractions`
 - Transfer: `TransferX.Transfer.Abstractions`
 
-Versionen aus [sdk/package-versions.json](../../sdk/package-versions.json) (aktuell `3.0.0-preview.1`).
+Versionen aus [sdk/package-versions.json](../../sdk/package-versions.json) (aktuell `3.0.0`).
 
 Eine Referenz auf `TransferX.Core` bricht den Build ab (Build-Sperre). Core ist kein Plugin-Paket.
 

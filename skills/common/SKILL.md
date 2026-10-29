@@ -24,7 +24,7 @@ description: >-
 - NuGet-Pakete: **Plural** — `TransferX.Provider.Abstractions`, `TransferX.Transfer.Abstractions`
 - Versionen **nur** aus `sdk/package-versions.json`
 - Kein TransferX-Core-Quellcode ändern
-- Keine `TransferX.Core`-Referenz im Plugin. Die SDK-Pakete erzwingen das per Build-Sperre. Versionen: `3.0.0-preview.1`
+- Keine `TransferX.Core`-Referenz im Plugin. Die SDK-Pakete erzwingen das per Build-Sperre. Versionen: `3.0.0`
 - Keine Submodule, Symlinks oder externe Ordner-Referenzen
 
 ## Workflow: Neues Plugin

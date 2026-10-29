@@ -1,4 +1,4 @@
-﻿<!-- Angepasst an NuGet TransferX.Provider.Abstractions 3.0.0-preview.1, Stand: 2026-10-28. Sync: docs/MIGRATION.md. -->
+﻿<!-- Angepasst an NuGet TransferX.Provider.Abstractions 3.0.0, Stand: 2026-10-28. Sync: docs/MIGRATION.md. -->
 
 # Provider Plugin implementieren
 
@@ -92,7 +92,7 @@ Das neue Plugin-Projekt benötigt ausschliesslich eine Referenz auf `TransferX.P
 TransferX-Plugins dürfen TransferX.Core nicht referenzieren – nur TransferX.Provider.Abstractions / TransferX.Transfer.Abstractions.
 ```
 
-Version aus [sdk/package-versions.json](../../sdk/package-versions.json): **3.0.0-preview.1**. Host und Plugin verwenden dieselbe Major-Version, siehe [Versionierung](../conventions/versioning.md).
+Version aus [sdk/package-versions.json](../../sdk/package-versions.json): **3.0.0**. Host und Plugin verwenden dieselbe Major-Version, siehe [Versionierung](../conventions/versioning.md).
 
 ```mermaid
 graph LR
@@ -122,7 +122,7 @@ Beispiel: TransferX.Provider.MyFtp\TransferX.Provider.MyFtp.csproj
 
   <ItemGroup>
     <!-- Version aus sdk/package-versions.json. Keine TransferX.Core-Referenz. -->
-    <PackageReference Include="TransferX.Provider.Abstractions" Version="3.0.0-preview.1" />
+    <PackageReference Include="TransferX.Provider.Abstractions" Version="3.0.0" />
   </ItemGroup>
 
 </Project>

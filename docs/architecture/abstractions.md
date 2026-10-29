@@ -1,4 +1,4 @@
-﻿<!-- Angepasst an NuGet TransferX.* 3.0.0-preview.1, Stand: 2026-10-28. Sync: docs/MIGRATION.md. -->
+﻿<!-- Angepasst an NuGet TransferX.* 3.0.0, Stand: 2026-10-28. Sync: docs/MIGRATION.md. -->
 
 # Projekt: TransferX Abstractions
 
