@@ -35,7 +35,7 @@ MyProvider (IProvider)
 2. `IProvider` implementieren: `Name`, `Version`, `ProviderType`, `InitializeAsync`, `ExecuteAsync`
 3. Commands: `UploadFile`, `CreateFolder`, `DeleteFile`
 4. Queries: `ListFolders`, `ListFiles`, `DownloadFile`
-5. NuGet: `TransferX.Provider.Abstractions` (Version aus `package-versions.json`, aktuell `3.0.0`)
+5. NuGet: `TransferX.Provider.Abstractions` (Version aus `package-versions.json`, aktuell `3.0.2`)
 6. Keine `TransferX.Core`-Referenz — die Build-Sperre bricht den Build ab
 
 ## Kritischer Fallstrick: Plugin-Discovery

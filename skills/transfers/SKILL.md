@@ -32,7 +32,7 @@ MyCommandCommand (ITransferCommand)
 
 1. `[TransferMetadata]` auf der Command-Klasse
 2. `ITransferCommand` implementieren
-3. NuGet: **nur** `TransferX.Transfer.Abstractions` (Version aus `package-versions.json`, aktuell `3.0.0`)
+3. NuGet: **nur** `TransferX.Transfer.Abstractions` (Version aus `package-versions.json`, aktuell `3.0.2`)
 4. **Keine** `TransferX.Core`-Referenz. Die Build-Sperre bricht den Build ab.
 
 ## ExecuteAsync-Muster

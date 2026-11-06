@@ -12,7 +12,7 @@ Scaffold fuer ein neues TransferX Provider-Plugin.
 
 ## NuGet-Version
 
-Version in `.csproj`-Dateien aus [sdk/package-versions.json](../../sdk/package-versions.json) uebernehmen (`3.0.0`).
+Version in `.csproj`-Dateien aus [sdk/package-versions.json](../../sdk/package-versions.json) uebernehmen (`3.0.2`).
 
 **Build-Sperre:** Eine zusätzliche `PackageReference` auf `TransferX.Core` bricht den Build ab:
 

@@ -1,4 +1,4 @@
-<!-- DevKit-Konvention, Stand: 2026-10-28. Abgestimmt auf die NuGet-Pakete TransferX.* 3.0.0. Nicht aus TransferX.Core kopiert; Sync-Regeln siehe docs/MIGRATION.md. -->
+<!-- DevKit-Konvention, Stand: 2026-10-28. Abgestimmt auf die NuGet-Pakete TransferX.* 3.0.2. Nicht aus TransferX.Core kopiert; Sync-Regeln siehe docs/MIGRATION.md. -->
 
 # Versionierung der SDK-Pakete
 
@@ -23,7 +23,7 @@ Die Plugin-SDK-Pakete folgen [Semantic Versioning](https://semver.org/lang/de/).
 
 Die kanonische Version steht in [sdk/package-versions.json](../../sdk/package-versions.json). Templates und Plugin-Projekte übernehmen diese Version wörtlich.
 
-Aktueller Stand: **3.0.0**.
+Aktueller Stand: **3.0.2**.
 
 ## Gleiche Major-Version
 
