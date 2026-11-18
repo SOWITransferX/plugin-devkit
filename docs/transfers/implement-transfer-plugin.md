@@ -301,7 +301,7 @@ public async Task<TransferResult> ExecuteAsync(
         cancellationToken.ThrowIfCancellationRequested();
 
         var listResponse = (ListFilesResponse)await context.Source.ExecuteAsync(
-            new ListFilesRequest { Path = context.SourcePath, Recursive = true },
+            new ListFilesRequest { Path = context.SourcePath, Recursive = false },
             progress: null,
             cancellationToken);
 
@@ -537,7 +537,7 @@ namespace TransferX.Transfer.MyCopy;
 
 /// <summary>
 /// Copy-Transfer-Command-Implementierung für TransferX.<br/>
-/// Kopiert alle Dateien rekursiv vom Quell-Provider zum Ziel-Provider.
+/// Kopiert alle Dateien vom Quell-Provider zum Ziel-Provider.
 /// </summary>
 [TransferMetadata]
 public sealed class MyCopyCommand : ITransferCommand
@@ -546,7 +546,7 @@ public sealed class MyCopyCommand : ITransferCommand
     public string CommandName => "MyCopy";
 
     /// <inheritdoc/>
-    public string Description => "Kopiert alle Dateien rekursiv vom Quell- zum Ziel-Provider.";
+    public string Description => "Kopiert alle Dateien vom Quell- zum Ziel-Provider.";
 
     /// <inheritdoc/>
     public string Version => "1.0.0";
@@ -563,7 +563,7 @@ public sealed class MyCopyCommand : ITransferCommand
             cancellationToken.ThrowIfCancellationRequested();
 
             var listResponse = (ListFilesResponse)await context.Source.ExecuteAsync(
-                new ListFilesRequest { Path = context.SourcePath, Recursive = true },
+                new ListFilesRequest { Path = context.SourcePath, Recursive = false },
                 progress: null,
                 cancellationToken);
 
