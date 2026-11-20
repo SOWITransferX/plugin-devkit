@@ -41,10 +41,10 @@ Dieses Repository ist der zentrale Einstiegspunkt für menschliche Entwickler un
 
 | Repository | Verantwortlich für |
 | --- | --- |
-| **TransferX** (`Repositories\TransferX\Source`) | Runtime, Core, Deployment, Abstractions-Quellcode |
-| **plugin-devkit** (dieses Repo) | Plugin-Entwicklung, Skills, Templates, Developer-Dokumentation |
+| **TransferX** (`Repositories\TransferX\Source`) | Runtime, Core, Deployment, Abstractions-Quellcode, Produktdokumentation |
+| **plugin-devkit** (dieses Repo) | Plugin-Entwicklung, Skills, Templates, Plugin-Dokumentation (Architektur nur Plugin-Sicht) |
 
-Dokumentation wird aus TransferX **kopiert** (nie verlinkt als Submodule). Details: [docs/MIGRATION.md](docs/MIGRATION.md).
+`docs/architecture/architecture.md` beschreibt die **Plugin-Architektur** (Host als Blackbox). Die Gesamt-TransferX-Architektur liegt in der TransferX-Produktdokumentation. Historischer Sync: [docs/MIGRATION.md](docs/MIGRATION.md).
 
 ## KI-Agent-Einstiegspunkte
 
