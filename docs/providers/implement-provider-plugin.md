@@ -2,7 +2,7 @@
 
 # Provider Plugin implementieren
 
-Basis Dokumente: [README](../../README.md), [TransferX Architektur](../architecture/architecture.md), [TransferX Abstractions](../architecture/abstractions.md), [TransferX Core (nicht im DevKit)](../../README.md)
+Basis Dokumente: [Plugin-Architektur](../architecture/architecture.md), [Plugin-Abstractions](../architecture/abstractions.md), [Plugin-Lifecycle](../architecture/plugin-lifecycle.md), [Versionierung](../conventions/versioning.md)
 
 Dieser Leitfaden erklärt Schritt für Schritt, wie ein neues **Provider-Plugin** für TransferX erstellt wird.  
 Ein Provider kapselt den Zugriff auf ein Dateisystem oder einen Datendienst (z.B. WebDAV, FTP, lokales Dateisystem, SFTP, S3).

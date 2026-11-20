@@ -2,11 +2,11 @@
 
 # Transfer Plugin implementieren
 
-> **plugin-devkit:** Templates in [templates/transfer-template/](../../templates/transfer-template/) referenzieren nur `TransferX.Transfer.Abstractions`.
+> **plugin-devkit:** Templates unter https://github.com/SOWITransferX/plugin-devkit (Ordner `templates/transfer-template/`) referenzieren nur `TransferX.Transfer.Abstractions`.
 > Eine zusätzliche `TransferX.Core`-Referenz bricht den Build ab (Build-Sperre im NuGet-Paket).
 > Fortschritt läuft über `TransferContext.Progress` (`ITransferProgress`). Den `ProgressAggregator` erzeugt der Host; Plugins instanziieren ihn nicht.
 
-Basis Dokumente: [README](../../README.md), [TransferX Architektur](../architecture/architecture.md), [TransferX Abstractions](../architecture/abstractions.md), [Versionierung](../conventions/versioning.md)
+Basis Dokumente: [Plugin-Architektur](../architecture/architecture.md), [Plugin-Abstractions](../architecture/abstractions.md), [Plugin-Lifecycle](../architecture/plugin-lifecycle.md), [Versionierung](../conventions/versioning.md)
 
 Dieser Leitfaden erklärt Schritt für Schritt, wie ein neues **Transfer-Plugin** für TransferX erstellt wird.  
 Ein Transfer-Plugin kapselt die Logik für einen spezifischen Transfertyp (z.B. Copy, Sync, Preview) und arbeitet mit zwei Provider-Instanzen (Quelle und Ziel).

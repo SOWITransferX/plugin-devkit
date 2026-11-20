@@ -2,7 +2,7 @@
 
 # Projekt: TransferX Abstractions
 
-Basis Dokumente: [README](../../README.md), [Coding Standards](../conventions/coding-standards.md) und [TransferX Architektur](../architecture/architecture.md)
+Basis Dokumente: [Plugin-Architektur](architecture.md), [Plugin-Lifecycle](plugin-lifecycle.md)
 
 Rolle in der Architektur: **Abstractions Layer** definiert die Plugin Schnittstellen für Provider- und Transfer-Handler. Plugins implementieren diese Interfaces. Der Core Layer nutzt die Abstractions zum dynamischen Laden der Plugins.
 

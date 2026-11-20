@@ -48,5 +48,4 @@ Fortschritt melden Transfer-Plugins über `TransferContext.Progress` (`ITransfer
 ## Weiterführend
 
 - [sdk/package-versions.json](../../sdk/package-versions.json)
-- [sdk/README.md](../../sdk/README.md)
 - [plugin-lifecycle.md](../architecture/plugin-lifecycle.md)
